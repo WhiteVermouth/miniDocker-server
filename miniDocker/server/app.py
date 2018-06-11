@@ -10,9 +10,11 @@ from miniDocker.server.standalone import switch_container_pause_status
 from miniDocker.server.standalone import get_stats
 
 app = Flask(__name__)
-app.config.from_json("config.default.json")
-if os.getenv("MINIDOCKER_CONF") is not None:
-    app.config.from_envvar("MINIDOCKER_CONF")
+env_var = "MINIDOCKER_CONF"
+if os.getenv(env_var) is not None:
+    app.config.from_json(os.getenv(env_var))
+else:
+    app.config.from_json("config.default.json")
 
 
 @app.before_request

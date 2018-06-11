@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name="miniDocker",
-    version="0.0.6",
+    version="0.0.7",
     author="Augustus",
     author_email="vermouth7dante@gmail.com",
     description="the middleware and server-side package for WeChat mini program 'miniDocker'",
