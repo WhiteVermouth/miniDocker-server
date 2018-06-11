@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello():
+def test_network():
     return "Hello, world!"
 
 

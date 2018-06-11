@@ -1,6 +1,5 @@
 from flask import Flask, request
 from flask import jsonify
-import uuid
 import os
 from miniDocker.server.standalone import list_containers
 from miniDocker.server.standalone import stop_container
@@ -11,8 +10,9 @@ from miniDocker.server.standalone import switch_container_pause_status
 from miniDocker.server.standalone import get_stats
 
 app = Flask(__name__)
-
-token = uuid.uuid4().hex
+app.config.from_json("config.default.json")
+if os.getenv("MINIDOCKER_CONF") is not None:
+    app.config.from_envvar("MINIDOCKER_CONF")
 
 
 @app.before_request
@@ -21,7 +21,7 @@ def check_token():
         return
     else:
         args = request.get_json()
-        if args != None and "token" in args and args["token"] == token:
+        if args != None and "token" in args and args["token"] == app.config["TOKEN"]:
             return
     return jsonify({
         "warn": "You have no permission"
@@ -30,11 +30,10 @@ def check_token():
 
 @app.route("/auth_server", methods=['POST'])
 def auth_server():
-    app.config["MINIDOCKER_PWD"] = os.getenv("MINIDOCKER_PWD")
-    if request.get_json()["password"] == app.config['MINIDOCKER_PWD']:
+    if request.get_json()["password"] == app.config['PASSWORD']:
         return jsonify({
             "status": "success",
-            "token": token
+            "token": app.config["TOKEN"]
         })
     else:
         return jsonify({

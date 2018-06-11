@@ -9,7 +9,10 @@ def list_containers():
     containers = client.containers.list(all=True)
     for container in containers:
         c = {}
-        c['image'] = container.image.tags[0]
+        if len(container.image.tags) != 0:
+            c['image'] = container.image.tags[0]
+        else:
+            c['image'] = container.image.short_id
         c['name'] = container.name
         c['status'] = container.status
         c['short_id'] = container.short_id

@@ -5,13 +5,17 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name="miniDocker",
-    version="0.0.4",
+    version="0.0.6",
     author="Augustus",
     author_email="vermouth7dante@gmail.com",
     description="the middleware and server-side package for WeChat mini program 'miniDocker'",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
+    include_package_data=True,
+    package_data={
+        '': ['*.json']
+    },
     install_requires=[
         'flask',
         'requests',
