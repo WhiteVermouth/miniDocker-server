@@ -51,7 +51,7 @@ def switch_container_pause_status(name):
 def remove_container(name):
     try:
         container = client.containers.get(name)
-        if container.status == "running":
+        if container.status != "exited":
             stop_container(name)
         container.remove(v=True)
         return {"status": "success"}
