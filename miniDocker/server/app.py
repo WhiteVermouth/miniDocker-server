@@ -23,7 +23,7 @@ def check_token():
         return
     else:
         args = request.get_json()
-        if args != None and "token" in args and args["token"] == app.config["TOKEN"]:
+        if args is not None and "token" in args and args["token"] == app.config["TOKEN"]:
             return
     return jsonify({
         "warn": "You have no permission"
@@ -45,8 +45,7 @@ def auth_server():
 
 @app.route("/list_containers")
 def standalone_list_containers():
-    containers = list_containers()
-    return jsonify(containers)
+    return jsonify(list_containers())
 
 
 @app.route("/stop_container/<name>")
@@ -76,5 +75,4 @@ def standalone_get_logs(name):
 
 @app.route("/get_stats/<name>")
 def standalone_get_stats(name):
-    res = get_stats(name)
-    return jsonify(res)
+    return jsonify(get_stats(name))

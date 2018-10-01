@@ -6,11 +6,6 @@ import json
 app = Flask(__name__)
 
 
-@app.route("/")
-def test_network():
-    return "Hello, world!"
-
-
 @app.route("/auth", methods=['POST'])
 def auth_server():
     form = ServerForm(request.form)
@@ -32,49 +27,8 @@ def standalone_list_containers():
     return jsonify(json.loads(res.text))
 
 
-@app.route("/stop_container", methods=['POST'])
-def standalone_stop_container():
+@app.route("/<function>", methods=['POST'])
+def standalone_function(function):
     args = request.get_json()
-    res = requests.get(url=("http://" + args["address"] + "/stop_container/" + args["name"]),
-                       json={"token": args["token"]})
-    return jsonify(json.loads(res.text))
-
-
-@app.route("/start_container", methods=['POST'])
-def standalone_start_container():
-    args = request.get_json()
-    res = requests.get(url=("http://" + args["address"] + "/start_container/" + args["name"]),
-                       json={"token": args["token"]})
-    return jsonify(json.loads(res.text))
-
-
-@app.route("/remove_container", methods=['POST'])
-def standalone_remove_container():
-    args = request.get_json()
-    res = requests.get(url=("http://" + args["address"] + "/remove_container/" + args["name"]),
-                       json={"token": args["token"]})
-    return jsonify(json.loads(res.text))
-
-
-@app.route("/switch_pause_status", methods=['POST'])
-def standalone_switch_pause_status():
-    args = request.get_json()
-    res = requests.get(url=("http://" + args["address"] + "/switch_pause_status/" + args["name"]),
-                       json={"token": args["token"]})
-    return jsonify(json.loads(res.text))
-
-
-@app.route("/get_logs", methods=['POST'])
-def standalone_get_logs():
-    args = request.get_json()
-    res = requests.get(url=("http://" + args["address"] + "/get_logs/" + args["name"]),
-                       json={"token": args["token"]})
-    return jsonify(json.loads(res.text))
-
-
-@app.route("/get_stats", methods=['POST'])
-def standalone_get_stats():
-    args = request.get_json()
-    res = requests.get(url=("http://" + args["address"] + "/get_stats/" + args["name"]),
-                       json={"token": args["token"]})
+    res = requests.get(url=("http://" + args["address"] + function + args["name"]), json={"token": args["token"]})
     return jsonify(json.loads(res.text))
